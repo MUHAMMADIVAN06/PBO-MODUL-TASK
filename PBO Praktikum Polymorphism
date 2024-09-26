@@ -1,0 +1,194 @@
+using System;
+
+class Hewan
+{
+    public string Nama;
+    public int Umur;
+
+    public Hewan(string nama, int umur)
+    {
+        Nama = nama;
+        Umur = umur;
+    }
+
+    public virtual string Suara()
+    {
+        return"Hewan ini bersuara";
+    }
+
+    public (string, int) InfoHewan()
+    {
+        return (Nama, Umur);
+    }
+}
+
+class Mamalia : Hewan
+{
+    public int jumlahKaki;
+
+    public Mamalia(string nama, int umur, int jumlahkaki) : base(nama, umur)
+    {
+        jumlahKaki = jumlahkaki;
+    }
+
+    public override string Suara()
+    {
+        return"Mamalia bersuara";
+    }
+}
+
+class Reptil : Hewan
+{
+    public double panjangTubuh;
+
+    public Reptil(string nama, int umur, double panjangtubuh) : base(nama, umur)
+    {
+        panjangTubuh = panjangtubuh;
+    }
+
+    public override string Suara()
+    {
+        return"Reptil bersuara";
+    }
+}
+
+class Singa : Mamalia
+{
+    public Singa(string nama, int umur, int jumlahkaki) : base(nama, umur, jumlahkaki) { }
+
+    public void Mengaum()
+    {
+        Console.WriteLine("Singa sedang mengaum");
+    }
+
+    public override string Suara()
+    {
+        return"Rawrrr Rwarr Rawrrr";
+    }
+}
+
+class Gajah : Mamalia
+{
+    public Gajah(string nama, int umur, int jumlahkaki) : base(nama, umur, jumlahkaki) { }
+
+    public override string Suara()
+    {
+        return"Teuuuut Teuuut Teuuuut";
+    }
+}
+
+class Ular : Reptil
+{
+    public Ular(string nama, int umur, double panjangtubuh) : base(nama, umur, panjangtubuh) 
+    {
+        
+        
+    }
+
+    public void Merayap()
+    {
+        Console.WriteLine("Ular sedang merayap");
+    }
+
+    public override string Suara()
+    {
+        return"Zseeeen Zseeee Zseeee";
+    }
+}
+
+class Buaya : Reptil
+{
+    public Buaya(string nama, int umur, double panjangtubuh) : base(nama, umur, panjangtubuh) 
+    {
+        
+    }
+
+    public override string Suara()
+    {
+        return"Errroooo Errrrooo Errroooo";
+    }
+}
+
+// Kelas KebunBinatang tanpa List
+class KebunBinatang
+{
+    // Array untuk menyimpan koleksi hewan di kebun binatang
+    private Hewan[] koleksiHewan;
+    private int jumlahHewan;
+
+    // Konstruktor untuk menginisialisasi array dengan ukuran tertentu
+    public KebunBinatang(int kapasitas)
+    {
+        koleksiHewan = new Hewan[kapasitas];
+        jumlahHewan = 0;
+    }
+
+    // Method untuk menambahkan hewan ke koleksi
+    public void TambahHewan(Hewan hewan)
+    {
+        if (jumlahHewan < koleksiHewan.Length)
+        {
+            koleksiHewan[jumlahHewan] = hewan;
+            jumlahHewan++;
+            Console.WriteLine($"Hewan {hewan.Nama} telah ditambahkan ke kebun binatang.");
+        }
+        else
+        {
+            Console.WriteLine("Kebun binatang penuh, tidak bisa menambah hewan lagi.");
+        }
+    }
+
+    // Method untuk menampilkan daftar semua hewan di kebun binatang
+    public void DaftarHewan()
+    {
+        Console.WriteLine("\nDaftar Hewan di Kebun Binatang:");
+        for (int i = 0; i < jumlahHewan; i++)
+        {
+            Hewan hewan = koleksiHewan[i];
+            Console.WriteLine($"Nama: {hewan.Nama}, Umur: {hewan.Umur}");
+        }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Membuat objek kebun binatang dengan kapasitas 10
+        KebunBinatang kebunBinatang = new KebunBinatang(10);
+
+        // Membuat beberapa objek dari berbagai jenis hewan
+        Singa singa = new Singa("Evos", 5, 4);
+        Gajah gajah = new Gajah("Momo", 10, 4);
+        Ular ular = new Ular("Lizard", 3, 2.5);
+        Buaya buaya = new Buaya("Croco", 7, 4.0);
+
+        // Menambahkan hewan-hewan tersebut ke kebun binatang
+        kebunBinatang.TambahHewan(singa);
+        kebunBinatang.TambahHewan(gajah);
+        kebunBinatang.TambahHewan(ular);
+        kebunBinatang.TambahHewan(buaya);
+
+        // Menampilkan semua hewan yang ada di kebun binatang
+        kebunBinatang.DaftarHewan();
+
+        // Demonstrasi polymorphism: Memanggil method Suara() untuk beberapa hewan
+        Console.WriteLine("\nMenampilkan informasi singa:");
+        Console.WriteLine($"Nama: {singa.Nama}, Umur: {singa.Umur}, Jumlah kaki:{singa.jumlahKaki}");
+         
+        Console.WriteLine("\nDemonstrasi Polymorphism:");
+        singa.Suara();  // Suara Singa
+        gajah.Suara();  // Suara Gajah
+        ular.Suara();   // Suara Ular
+        buaya.Suara();// Suara Buaya
+
+        // Memanggil method khusus seperti Mengaum() untuk Singa
+        Console.WriteLine("\nMethod Khusus:");
+        singa.Mengaum(); // Method khusus untuk Singa
+        ular.Merayap();
+        
+        Console.WriteLine("\nPercobaan 5:");
+        Reptil reptil = new Buaya("Croco", 7, 4.0);
+        Console.WriteLine(reptil.Suara());
+    }
+}
